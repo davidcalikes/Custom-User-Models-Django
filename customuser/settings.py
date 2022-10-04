@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'user',
     'passport',
-    'records',
 ]
 
 SITE_ID = 1

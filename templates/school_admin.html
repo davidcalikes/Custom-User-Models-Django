@@ -7,18 +7,24 @@
         {% if user.is_authenticated and user.user_type == "school" %}
         <div>
             <h5 class="nav-item">Logged in as school admin</h5>
-            <h2>This is the school admin page for {{ user.username }} which was created by {{ enrolled_pupil.created_by }}</h2>
+            <h2>This is the school admin page for {{ user.username }} which was created by
+                {{ enrolled_pupil.created_by }}</h2>
             <h4>Where School Administrators can add, view, update and delete student records</h4>
+            <h1><a href="{% url 'add_pupil_record' %}">Add Pupil Record</a></h1>
             <hr>
-                {% for enrolled_pupil in enrolled_pupil_list %}
-                        <div>
-                            <h4>Pupil Name : {{ enrolled_pupil.pupil_last_name}} {{ enrolled_pupil.pupil_first_name}}</h4> 
-                            <h4>ID:{{ enrolled_pupil.pupil_id}} </h4>
-                        </div>
-                {% endfor %}    
+        </div>
+            {% for enrolled_pupil in enrolled_pupil_list %}
+                <div>
+                    <a href="{% url 'enrolled_pupil_record' enrolled_pupil.pupil_id  %}">
+                        <h4>Pupil Name : {{ enrolled_pupil.pupil_last_name }} {{ enrolled_pupil.pupil_first_name}}</h4>
+                        <h4>ID:{{ enrolled_pupil.pupil_id}} </h4>
+                    </a>
+                </div>
+            {% endfor %}
+            
         {% else %}
         <h1>
             Unauthorised user go back!
         </h1>
         {% endif %}
-    {% endblock %}
+        {% endblock %}

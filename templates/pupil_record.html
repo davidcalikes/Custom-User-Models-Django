@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        {% if user.is_authenticated and user.user_type == "school" %}  
+            <h3>Surname:            {{ record.pupil_last_name }}</h3> 
+            <h3>First Name:         {{ record.pupil_first_name }}</h3>
+            <h3>School Name:        {{ record.school_name }}</h3>
+            <h3>Teacher:            {{record.teacher_name }}</h3>
+            <h3>School Roll Number: {{ record.school_roll_no }}</h3>
+            <h3>Pupil ID:           {{ record.pupil_id }}</h3>
+            <h3>School Email:       {{ record.school_email }}</h3>
+            <h3>Last Update:        {{record.last_updated }}</h3>
+            <br>
+        {% else %}
+        <h1>
+            Unauthorised user go back!
+        </h1>
+        {% endif %}
+    {% endblock %}

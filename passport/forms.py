@@ -1,5 +1,5 @@
-from django import forms
 from .models import EnrolledPupil
+from django import forms
 from allauth.account.forms import SignupForm
 
 
@@ -16,13 +16,13 @@ class CoreSignupForm(SignupForm):
     def __init__(self, *args, **kwargs):
         super(CoreSignupForm, self).__init__(*args, **kwargs)
         # here i add the new fields that i need
-        self.fields["user_type"] = forms.ChoiceField(choices=TYPE_CHOICES, label='User Type')
+        self.fields["user_type"] = forms.ChoiceField(choices=TYPE_CHOICES,
+                                                     label='User Type')
 
 
 class PupilRecordForm(forms.ModelForm):
-
     """
-    Form for adding and enrolled pupil to records database
+    Form for adding an enrolled pupil to records database
     """
     class Meta:
         """
@@ -31,4 +31,4 @@ class PupilRecordForm(forms.ModelForm):
         model = EnrolledPupil
         fields = ('pupil_first_name', 'pupil_last_name',
                   'school_name', 'teacher_name', 'school_roll_no',
-                  'pupil_id', 'slug', 'school_email')
+                  'pupil_id', 'school_email', )
