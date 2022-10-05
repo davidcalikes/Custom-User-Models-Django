@@ -53,7 +53,7 @@
                         <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
                     </li>
                     <button>
-                        <a class="nav-link" href="{% url 'parent' %}">My Pupil Passports</a>
+                        <a class="nav-link" href="{% url 'passport_list' %}">My Pupil Passports</a>
                     </button>
                     <h1>logged in as parent</h1>
                     {% elif user.is_authenticated and user.user_type == "pupil" %}

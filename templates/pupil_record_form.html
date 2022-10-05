@@ -11,8 +11,10 @@
             <form method="POST" enctype='multipart/form-data'>
                 {% csrf_token %}
                 {{ form | crispy }}
-                <input type="submit" value="Add Pupil">
+                <input type="submit" value="Submit">
             </form>
+        </div>
+        <a href="{% url 'enrolled_pupil_list' %}"><h4>Cancel without saving</h4></a>
         {% else %}
         <h1>
             Unauthorised user go back!

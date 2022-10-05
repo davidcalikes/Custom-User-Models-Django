@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
-from .models import EnrolledPupil
+from .models import EnrolledPupil, Passport
 from .forms import PupilRecordForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
@@ -29,6 +29,23 @@ class EnrolledPupilList(generic.ListView):
         )
 
 
+class AddPupilRecord(generic.CreateView):
+    """
+    User with role of School Admin can add an enrolled pupil to database.
+    """
+    model = EnrolledPupil
+    form_class = PupilRecordForm
+    template_name = 'pupil_record_form.html'
+    success_url = '/'
+
+    def form_valid(self, form):
+        """
+        Auto applies foreign key and auto generated settings.
+        """
+        form.instance.created_by = self.request.user
+        return super(AddPupilRecord, self).form_valid(form)
+
+
 class EnrolledPupilRecord(View):
     """
     Displays pupil record selected by authenticated user
@@ -49,18 +66,36 @@ class EnrolledPupilRecord(View):
         )
 
 
-class AddPupilRecord(generic.CreateView):
+class UpdatePupilRecord(generic.edit.UpdateView):
     """
-    User with role of School Admin can add an enrolled pupil to database.
+    User with role of School Admin can update enrolled existing pupil record
     """
     model = EnrolledPupil
     form_class = PupilRecordForm
-    template_name = 'add_pupil_form.html'
-    success_url = '/'
+    template_name = 'pupil_record_form.html'
+    success_url = reverse_lazy('enrolled_pupil_list')
 
-    def form_valid(self, form):
-        """
-        Auto applies foreign key and auto generated settings.
-        """
-        form.instance.created_by = self.request.user
-        return super(AddPupilRecord, self).form_valid(form)
+
+class DeletePupilRecord(generic.DeleteView):
+    """
+    User with role of School Admin can delete existing pupil record
+    """
+    model = EnrolledPupil
+    success_url = reverse_lazy('enrolled_pupil_list')
+
+    def delete(self, request, *args, **kwargs):
+        return super(DeletePupilRecord, self).delete(request, *args, **kwargs)
+
+
+class PassportList(generic.ListView):
+    """
+    Displays page that lists pupil records created by logged in user
+    """
+    model = Passport
+    template_name = 'passport_list.html'
+    context_object_name = 'passport_list'
+
+    def get_queryset(self):
+        return Passport.objects.filter(
+            created_by=self.request.user
+        )

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<html>
+    <head>
+        <title>
+            delete
+        </title>
+    </head>
+    <body>
+        <div>
+            
+            <div>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <h3>***WARNING***</h3>
+                    <br>
+                    <p>You are about to delete this record </p>
+                    <input type="submit" value="Delete" class="btn btn-lg btn-danger">
+                    <a href="{% url 'enrolled_pupil_list' %}" class="btn btn-lg btn-success">Go Back</a>
+                </form>
+            </div>
+
+        </div>
+    </body>
+</html>
+{% endblock %}
