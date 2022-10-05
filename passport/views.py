@@ -99,3 +99,23 @@ class PassportList(generic.ListView):
         return Passport.objects.filter(
             created_by=self.request.user
         )
+
+
+class PassportDetail(View):
+    """
+    Displays pupil record selected by authenticated user
+    """
+    def get(self, request, slug, *args, **kwargs):
+        """
+        Gets selected pupil record
+        """
+        queryset = Passport.objects.all()
+        passport = get_object_or_404(queryset, slug=slug)
+
+        return render(
+            request,
+            'passport_detail.html',
+            {
+                "passport": passport,
+            },
+        )

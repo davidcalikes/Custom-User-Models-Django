@@ -4,6 +4,7 @@
 
 <div class="container-fluid">
     <div class="row">
+        {{ user.user_type }}
         {% if user.is_authenticated and user.user_type == "parent" %}
         <div>
             <h5 class="nav-item">Logged in as parent</h5>
@@ -13,7 +14,7 @@
         </div>
             {% for passport in passport_list %}
                 <div>
-                    <a href="#">
+                    <a href="{% url 'passport_detail' passport.slug %}"">
                         <h4>Pupil Name : {{ passport.my_name }} </h4>
                         <h4>DOB:{{ passport.my_date_of_birth}} </h4>
                     </a>
