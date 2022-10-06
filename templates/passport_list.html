@@ -4,12 +4,12 @@
 
 <div class="container-fluid">
     <div class="row">
-        {{ user.user_type }}
         {% if user.is_authenticated and user.user_type == "parent" %}
         <div>
-            <h5 class="nav-item">Logged in as parent</h5>
-            <h2>Here are the passports you have created
-                <a href="#"><h1>Add New Passport</h1></a>
+            <h2>Here are the passports you have created:
+            <h3>You can view, edit or delete passports from this page.</h3>
+            <h3>Add a new passport via the link below if you have a valid PUPIL ID (read more)</h3>
+                
             <hr>
         </div>
             {% for passport in passport_list %}
@@ -20,6 +20,7 @@
                     </a>
                 </div>
             {% endfor %}
+            <a href="#"><h3>Add New Passport + </h3></a>
             
         {% else %}
         <h1>

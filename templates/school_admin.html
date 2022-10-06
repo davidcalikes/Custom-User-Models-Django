@@ -6,11 +6,10 @@
     <div class="row">
         {% if user.is_authenticated and user.user_type == "school" %}
         <div>
-            <h5 class="nav-item">Logged in as school admin</h5>
-            <h2>This is the school admin page for {{ user.username }} which was created by
+            <h2>This is the school admin page for {{ user.username }}
                 {{ enrolled_pupil.created_by }}</h2>
             <h4>Where School Administrators can add, view, update and delete student records</h4>
-            <h1><a href="{% url 'add_pupil_record' %}">Add Pupil Record</a></h1>
+            
             <hr>
         </div>
             {% for enrolled_pupil in enrolled_pupil_list %}
@@ -21,7 +20,7 @@
                     </a>
                 </div>
             {% endfor %}
-            
+            <h3><a href="{% url 'add_pupil_record' %}">Add Pupil Record +</a></h3>
         {% else %}
         <h1>
             Unauthorised user go back!

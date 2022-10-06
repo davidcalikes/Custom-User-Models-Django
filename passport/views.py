@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic, View
 from .models import EnrolledPupil, Passport
 from .forms import PupilRecordForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.template.defaultfilters import slugify
@@ -15,7 +16,15 @@ class HomePage(generic.TemplateView):
     template_name = 'index.html'
 
 
-class EnrolledPupilList(generic.ListView):
+class NoMansLand(generic.TemplateView):
+    """
+    Displays instructional video and links on landing page
+    """
+
+    template_name = 'no_mans_land.html'
+
+
+class EnrolledPupilList(LoginRequiredMixin, generic.ListView):
     """
     Displays page that lists pupil records created by logged in user
     """
@@ -29,7 +38,7 @@ class EnrolledPupilList(generic.ListView):
         )
 
 
-class AddPupilRecord(generic.CreateView):
+class AddPupilRecord(LoginRequiredMixin, generic.CreateView):
     """
     User with role of School Admin can add an enrolled pupil to database.
     """
@@ -46,7 +55,7 @@ class AddPupilRecord(generic.CreateView):
         return super(AddPupilRecord, self).form_valid(form)
 
 
-class EnrolledPupilRecord(View):
+class EnrolledPupilRecord(LoginRequiredMixin, View):
     """
     Displays pupil record selected by authenticated user
     """
@@ -66,7 +75,7 @@ class EnrolledPupilRecord(View):
         )
 
 
-class UpdatePupilRecord(generic.edit.UpdateView):
+class UpdatePupilRecord(LoginRequiredMixin, generic.edit.UpdateView):
     """
     User with role of School Admin can update enrolled existing pupil record
     """
@@ -76,7 +85,7 @@ class UpdatePupilRecord(generic.edit.UpdateView):
     success_url = reverse_lazy('enrolled_pupil_list')
 
 
-class DeletePupilRecord(generic.DeleteView):
+class DeletePupilRecord(LoginRequiredMixin, generic.DeleteView):
     """
     User with role of School Admin can delete existing pupil record
     """
@@ -87,7 +96,7 @@ class DeletePupilRecord(generic.DeleteView):
         return super(DeletePupilRecord, self).delete(request, *args, **kwargs)
 
 
-class PassportList(generic.ListView):
+class PassportList(LoginRequiredMixin, generic.ListView):
     """
     Displays page that lists pupil records created by logged in user
     """
@@ -101,7 +110,7 @@ class PassportList(generic.ListView):
         )
 
 
-class PassportDetail(View):
+class PassportDetail(LoginRequiredMixin, View):
     """
     Displays pupil record selected by authenticated user
     """
@@ -119,3 +128,15 @@ class PassportDetail(View):
                 "passport": passport,
             },
         )
+
+
+def LoginSuccess(request):
+    """
+    Redirects users based on whether they are in the admins group
+    """
+    if request.user.user_type == "school":
+        return redirect('enrolled_pupil_list')
+    elif request.user.user_type == 'parent':
+        return redirect('passport_list')
+    else:
+        return redirect('home')

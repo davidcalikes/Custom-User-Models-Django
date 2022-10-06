@@ -45,9 +45,11 @@
                         <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
                     </li>
                     <button>
-                        <a class="nav-link" href="{% url 'enrolled_pupil_list' %}">My Pupil Records</a>
+                        <a class="nav-link" href="{% url 'enrolled_pupil_list' %}">My Pupil Passports</a>
                     </button>
-                    <h1>Logged in as school</h1>
+                    <li class="nav-item">
+                        <a class="nav-item" >Logged in as school admin: {{ user.username  }}<a>
+                    </li>
                     {% elif user.is_authenticated and user.user_type == "parent" %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
@@ -55,12 +57,13 @@
                     <button>
                         <a class="nav-link" href="{% url 'passport_list' %}">My Pupil Passports</a>
                     </button>
-                    <h1>logged in as parent</h1>
+                    <li class="nav-item">
+                        <a class="nav-item" >Logged in as parent: {{ user.username  }}<a>
+                    </li>
                     {% elif user.is_authenticated and user.user_type == "pupil" %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
                     </li>
-                    <h1>Logged in as pupil</h1>
                     {% elif user.is_authenticated and user.user_type == "teacher" %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
@@ -70,7 +73,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
                     </li>
-                    <h1>Logged in as admin</h1>
+                    <h5>Logged in as admin</h5>
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_signup' %}">Register</a>
@@ -78,19 +81,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_login' %}">Login</a>
                     </li>
-                    {% endif %}
                 </ul>
+                {% endif %}
             </div>
         </div>
     </nav>
-
     <main class="flex-shrink-0 main-bg">
         {% block content %}
         
         {% endblock content %}
     </main>
 
-    <!-- Footer -->
+    <!-- Footer
     <footer class="footer mt-auto py-3 main-bg">
         <p class="m-0 text-center">David Calikes</p>
         <p class="m-0 text-center"> 
