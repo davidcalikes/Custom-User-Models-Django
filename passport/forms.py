@@ -15,7 +15,6 @@ class CoreSignupForm(SignupForm):
 
     def __init__(self, *args, **kwargs):
         super(CoreSignupForm, self).__init__(*args, **kwargs)
-        # here i add the new fields that i need
         self.fields["user_type"] = forms.ChoiceField(choices=TYPE_CHOICES,
                                                      label='User Type')
 

@@ -64,6 +64,10 @@ class Passport(models.Model):
     created_by = models.ForeignKey(NewUser,
                                    on_delete=models.CASCADE,
                                    related_name='creator')
+    teacher_id = models.CharField(
+        max_length=50, default='')
+    pupil_id = pupil_id = models.PositiveIntegerField(
+        default=0, unique=True)
 
     def __str__(self):
         return self.my_name

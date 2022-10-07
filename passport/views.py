@@ -16,14 +16,6 @@ class HomePage(generic.TemplateView):
     template_name = 'index.html'
 
 
-class NoMansLand(generic.TemplateView):
-    """
-    Displays instructional video and links on landing page
-    """
-
-    template_name = 'no_mans_land.html'
-
-
 class EnrolledPupilList(LoginRequiredMixin, generic.ListView):
     """
     Displays page that lists pupil records created by logged in user
@@ -130,6 +122,39 @@ class PassportDetail(LoginRequiredMixin, View):
         )
 
 
+class TeacherPassportList(generic.ListView):
+    template_name = 'teacher_passport_list.html'
+    model = Passport
+
+    def get_queryset(self):
+        query = self.request.GET.get('teacher_id')
+        if query:
+            object_list = self.model.objects.filter(pupil_id__icontains=query)
+        else:
+            object_list = self.model.objects.none()
+        return object_list
+
+
+class TeacherPassportDetail(LoginRequiredMixin, View):
+    """
+    Displays pupil record selected by authenticated user
+    """
+    def get(self, request, teacher_id, *args, **kwargs):
+        """
+        Gets selected pupil record
+        """
+        queryset = Passport.objects.all()
+        passport = get_object_or_404(queryset, teacher_id=teacher_id)
+
+        return render(
+            request,
+            'teacher_passport_detail.html',
+            {
+                "passport": passport,
+            },
+        )
+
+
 def LoginSuccess(request):
     """
     Redirects users based on whether they are in the admins group
@@ -138,5 +163,7 @@ def LoginSuccess(request):
         return redirect('enrolled_pupil_list')
     elif request.user.user_type == 'parent':
         return redirect('passport_list')
+    elif request.user.user_type == 'teacher':
+        return redirect('teacher_passport_list')
     else:
         return redirect('home')
