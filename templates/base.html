@@ -68,7 +68,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
                     </li>
-                    <h1>Logged in as teacher</h1>
+                    <button>
+                        <a class="nav-link" href="{% url 'teacher_passport_list' %}">My Pupil Passports</a>
+                    </button>
+                    <li class="nav-item">
+                        <a class="nav-item" >Logged in as school admin: {{ user.username  }}<a>
+                    </li>
                     {% elif user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
@@ -86,13 +91,13 @@
             </div>
         </div>
     </nav>
+
     <main class="flex-shrink-0 main-bg">
         {% block content %}
         
         {% endblock content %}
     </main>
 
-    <!-- Footer
     <footer class="footer mt-auto py-3 main-bg">
         <p class="m-0 text-center">David Calikes</p>
         <p class="m-0 text-center"> 

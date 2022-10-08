@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic, View
 from .models import EnrolledPupil, Passport
-from .forms import PupilRecordForm
+from .forms import PupilRecordForm, PupilPassportForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
@@ -88,6 +88,22 @@ class DeletePupilRecord(LoginRequiredMixin, generic.DeleteView):
         return super(DeletePupilRecord, self).delete(request, *args, **kwargs)
 
 
+class ValidatePupilId(generic.ListView):
+    """
+    Validates Pupil
+    """
+    template_name = 'validate_pupil_id.html'
+    model = EnrolledPupil
+
+    def get_queryset(self):
+        query = self.request.GET.get('pupil_id')
+        if query:
+            object_list = self.model.objects.filter(pupil_id__icontains=query)
+        else:
+            object_list = self.model.objects.none()
+        return object_list
+
+
 class PassportList(LoginRequiredMixin, generic.ListView):
     """
     Displays page that lists pupil records created by logged in user
@@ -100,6 +116,23 @@ class PassportList(LoginRequiredMixin, generic.ListView):
         return Passport.objects.filter(
             created_by=self.request.user
         )
+
+
+class AddPupilPassport(LoginRequiredMixin, generic.CreateView):
+    """
+    User with role of parent and a valid pupil ID number can create a passport
+    """
+    model = Passport
+    form_class = PupilPassportForm
+    template_name = 'pupil_passport_form.html'
+    success_url = '/'
+
+    def form_valid(self, form):
+        """
+        Auto applies foreign key and auto generated settings.
+        """
+        form.instance.created_by = self.request.user
+        return super(AddPupilPassport, self).form_valid(form)
 
 
 class PassportDetail(LoginRequiredMixin, View):
@@ -123,13 +156,17 @@ class PassportDetail(LoginRequiredMixin, View):
 
 
 class TeacherPassportList(generic.ListView):
+    """
+    Displays list of pupil passports when corresponding teacher id is typed
+    """
+
     template_name = 'teacher_passport_list.html'
     model = Passport
 
     def get_queryset(self):
         query = self.request.GET.get('teacher_id')
         if query:
-            object_list = self.model.objects.filter(pupil_id__icontains=query)
+            object_list = self.model.objects.filter(teacher_id__icontains=query)
         else:
             object_list = self.model.objects.none()
         return object_list
@@ -137,7 +174,7 @@ class TeacherPassportList(generic.ListView):
 
 class TeacherPassportDetail(LoginRequiredMixin, View):
     """
-    Displays pupil record selected by authenticated user
+    Displays list of pupil passports when corresponding teacher id is typed
     """
     def get(self, request, teacher_id, *args, **kwargs):
         """

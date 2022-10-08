@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        {% if user.is_authenticated and user.user_type == "parent" %}
+        <div>
+            <h3 class="nav-item">Pupil Passport Form</h3>
+            <hr>
+            <form method="POST" enctype='multipart/form-data'>
+                {% csrf_token %}
+                {{ form | crispy }}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <a href="{% url 'passport_list' %}"><h4>Cancel without saving</h4></a>
+        {% else %}
+        <h1>
+            Unauthorised user go back!
+        </h1>
+        {% endif %}
+    {% endblock %}
