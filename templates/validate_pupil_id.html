@@ -13,14 +13,14 @@
               </form>
             <hr>
         </div>
-            {% for pupil in enrolled_pupil_list %}
+
+            {% for pupil in object_list %}
                 <div>
                         <h3>Pupil Id Confirmed!</h3>
                         <h4>Pupil Name : {{ pupil.pupil_id }}</h4>
                         <h4>DOB:{{ pupil.pupil_id}} </h4>
                         <h3>Click to get started!</h3>
                 </div>
-                {% endif %}
             {% endfor %} 
         {% else %}
         <h1>

@@ -96,14 +96,17 @@ class ValidatePupilId(generic.ListView):
     model = EnrolledPupil
 
     def get_queryset(self):
+        print(self.request.GET)
         query = self.request.GET.get('pupil_id')
+        print(query)
         if query:
             object_list = self.model.objects.filter(pupil_id__icontains=query)
+            print(object_list)
         else:
             object_list = self.model.objects.none()
         return object_list
-
-
+    
+    
 class PassportList(LoginRequiredMixin, generic.ListView):
     """
     Displays page that lists pupil records created by logged in user
@@ -176,12 +179,12 @@ class TeacherPassportDetail(LoginRequiredMixin, View):
     """
     Displays list of pupil passports when corresponding teacher id is typed
     """
-    def get(self, request, teacher_id, *args, **kwargs):
+    def get(self, request, pupil_id, *args, **kwargs):
         """
         Gets selected pupil record
         """
         queryset = Passport.objects.all()
-        passport = get_object_or_404(queryset, teacher_id=teacher_id)
+        passport = get_object_or_404(queryset, pupil_id=pupil_id)
 
         return render(
             request,
