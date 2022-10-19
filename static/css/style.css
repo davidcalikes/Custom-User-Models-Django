@@ -26,7 +26,8 @@ body {
     padding-top: 1rem;
     padding-bottom: 1rem;
     padding-left: 0.5rem;
-    background: linear-gradient(to right, #ffffff, #ffffff, #23BBBB);
+    background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/vertical-waves.png"),
+    linear-gradient(to right, #ffffff, #ffffff, #23BBBB);
 }
 
 .navbar-brand {
@@ -46,7 +47,8 @@ body {
 }
 
 .main-bg {
-    background: linear-gradient(to right, #ffffff, #ffffff, #23BBBB);
+    background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/vertical-waves.png"),
+    linear-gradient(to right, #ffffff, #ffffff, #23BBBB);
 }
 
 .card {

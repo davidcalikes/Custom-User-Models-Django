@@ -90,7 +90,7 @@ class DeletePupilRecord(LoginRequiredMixin, generic.DeleteView):
 
 class ValidatePupilId(generic.ListView):
     """
-    Validates Pupil
+    Ensures Pupil is enrolled in system before a passport can be created
     """
     template_name = 'validate_pupil_id.html'
     model = EnrolledPupil
@@ -98,15 +98,13 @@ class ValidatePupilId(generic.ListView):
     def get_queryset(self):
         print(self.request.GET)
         query = self.request.GET.get('pupil_id')
-        print(query)
         if query:
             object_list = self.model.objects.filter(pupil_id__icontains=query)
-            print(object_list)
         else:
             object_list = self.model.objects.none()
         return object_list
-    
-    
+
+
 class PassportList(LoginRequiredMixin, generic.ListView):
     """
     Displays page that lists pupil records created by logged in user
@@ -140,7 +138,7 @@ class AddPupilPassport(LoginRequiredMixin, generic.CreateView):
 
 class PassportDetail(LoginRequiredMixin, View):
     """
-    Displays pupil record selected by authenticated user
+    Displays pupil passport selected by authenticated and authorised user
     """
     def get(self, request, slug, *args, **kwargs):
         """
@@ -197,7 +195,7 @@ class TeacherPassportDetail(LoginRequiredMixin, View):
 
 def LoginSuccess(request):
     """
-    Redirects users based on whether they are in the admins group
+    Redirects users based on user role
     """
     if request.user.user_type == "school":
         return redirect('enrolled_pupil_list')

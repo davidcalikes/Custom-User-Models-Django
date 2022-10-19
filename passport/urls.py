@@ -14,8 +14,6 @@ urlpatterns = [
     path('update/<int:pk>', views.UpdatePupilRecord.as_view(), name='update_pupil_record'),
     path('delete/<int:pk>', views.DeletePupilRecord.as_view(), name='delete_pupil_record'),
     path('passport_list/', views.PassportList.as_view(), name='passport_list'),
-    path('<slug:slug>/', views.PassportDetail.as_view(), name='passport_detail'),
+    path('passport_detail/<slug:slug>/', views.PassportDetail.as_view(), name='passport_detail'),
     path('teacher_passport_detail/<int:pupil_id>', views.TeacherPassportDetail.as_view(), name='teacher_passport_detail'),
-    
-    path('login_success/', views.LoginSuccess, name='login_success'),
 ]

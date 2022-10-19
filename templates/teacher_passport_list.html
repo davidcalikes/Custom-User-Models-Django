@@ -17,7 +17,7 @@
         </div>
             {% for passport in passport_list %}
                 <div>
-                    <a href="{% url 'teacher_passport_detail' passport.teacher_id %}">
+                    <a href="{% url 'teacher_passport_detail' passport.pupil_id %}">
                         <h4>Pupil Name : {{ passport.my_name }} </h4>
                         <h4>DOB:{{ passport.my_date_of_birth}} </h4>
                     </a>
